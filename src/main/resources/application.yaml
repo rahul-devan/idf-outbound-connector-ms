@@ -46,11 +46,15 @@ management:
   endpoint:
     health:
       show-details: always
+integrations:
+  jira:
+    api-token: ATATT3xFfGF0oSFcRQ7o5Lhh8oQD1OUw1o0AyFTdHOBLP2nvGm4p08aeZVlrmaNMaCNxftzcJuPB2geOWkuyxI0YomPKuY-oRhyQq0Hq_cxKoqriaYacSZgMoxN6ubOE9BObVDZzszR5YeTuYSNS7ADVJN2cnDhlFDTuf2klgZDJJ9kNljcIOAY=AF29FD23
+    base-url: https://ndashprivatelimited.atlassian.net
+    admin-email: ndashprivatelimited@gmail.com
+  github:
+    org-name: Ndash-IDF
+    api-token: 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
 
-jira:
-  api-token: ATATT3xFfGF0oSFcRQ7o5Lhh8oQD1OUw1o0AyFTdHOBLP2nvGm4p08aeZVlrmaNMaCNxftzcJuPB2geOWkuyxI0YomPKuY-oRhyQq0Hq_cxKoqriaYacSZgMoxN6ubOE9BObVDZzszR5YeTuYSNS7ADVJN2cnDhlFDTuf2klgZDJJ9kNljcIOAY=AF29FD23
-  base-url: https://ndashprivatelimited.atlassian.net
-  admin-email: ndashprivatelimited@gmail.com
 
 
 

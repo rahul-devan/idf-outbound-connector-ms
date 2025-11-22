@@ -44,14 +44,19 @@ public class CheckoutServiceImpl implements CheckoutService {
                         "Creator user not found with ID: " + createdBy));
 
 
-        checkoutRepository.findByUserIdAndApplicationIdAndProcessedFalse(
-                request.getUserId(), request.getApplicationId()
-        ).ifPresent(existing -> {
-            throw new CheckoutInProgressException(
-                    "A checkout request for this user and application is already under processing. " +
-                            "Checkout ID: " + existing.getCheckoutId()
-            );
-        });
+        checkoutRepository
+                .findByUserIdAndApplicationIdAndProcessTypeAndProcessedFalse(
+                        request.getUserId(),
+                        request.getApplicationId(),
+                        request.getProcessType()
+                )
+                .ifPresent(existing -> {
+                    throw new CheckoutInProgressException(
+                            "A request with this process type is already under processing. Checkout ID: "
+                                    + existing.getCheckoutId()
+                    );
+                });
+
 
         Checkout checkout = new Checkout();
         checkout.setProcessType(request.getProcessType());

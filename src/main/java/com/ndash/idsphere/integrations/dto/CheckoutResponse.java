@@ -16,4 +16,6 @@ public class CheckoutResponse {
     private LocalDateTime createdTime;
     private boolean processed;
     private String remarks;
+    private String applicationName;
+    private String requestedFor;
 }

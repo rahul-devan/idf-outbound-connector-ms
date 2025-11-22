@@ -42,9 +42,9 @@ public class JiraService implements IntegrationService {
     private final String apiToken;
 
     public JiraService(
-            @Value("${jira.base-url}") String jiraBaseUrl,
-            @Value("${jira.admin-email}") String adminEmail,
-            @Value("${jira.api-token}") String apiToken) {
+            @Value("${integrations.jira.base-url}") String jiraBaseUrl,
+            @Value("${integrations.jira.admin-email}") String adminEmail,
+            @Value("${integrations.jira.api-token}") String apiToken) {
         this.jiraBaseUrl = jiraBaseUrl;
         this.adminEmail = adminEmail;
         this.apiToken = apiToken;
