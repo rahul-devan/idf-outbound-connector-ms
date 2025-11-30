@@ -17,5 +17,6 @@ public interface CheckoutMapper {
             target = "requestedFor"
     )
     @Mapping(source = "createdBy.id", target = "createdByUserId")
+    @Mapping(expression = "java((checkout.getUser().getEmail()))", target = "email")
     CheckoutResponse toDto(Checkout checkout);
 }

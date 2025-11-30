@@ -18,4 +18,5 @@ public class CheckoutResponse {
     private String remarks;
     private String applicationName;
     private String requestedFor;
+    private String email;
 }
