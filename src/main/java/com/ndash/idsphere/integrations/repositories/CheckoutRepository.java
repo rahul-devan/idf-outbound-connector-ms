@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface CheckoutRepository extends JpaRepository<Checkout, Long> {
+public interface CheckoutRepository extends JpaRepository<Checkout, UUID> {
 
     Optional<Checkout> findByUserIdAndApplicationIdAndProcessedFalse(Long userId, Long applicationId);
 

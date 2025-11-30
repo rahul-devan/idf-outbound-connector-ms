@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -81,5 +83,15 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .stream()
                 .map(checkoutMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public void markProcessedTrue(UUID checkoutId) {
+        Optional<Checkout> optionalCheckout = checkoutRepository.findById(checkoutId);
+        if (optionalCheckout.isPresent()) {
+            Checkout checkout = optionalCheckout.get();
+            checkout.setProcessed(true);
+            checkoutRepository.saveAndFlush(checkout);
+        }
     }
 }

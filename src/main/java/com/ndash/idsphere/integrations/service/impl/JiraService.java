@@ -9,6 +9,7 @@ import com.ndash.idsphere.integrations.dto.IntegrationUserResponse;
 import com.ndash.idsphere.integrations.dto.jira.JiraProjectResponse;
 import com.ndash.idsphere.integrations.dto.jira.JiraRoleResponse;
 import com.ndash.idsphere.integrations.exception.ExternalServiceException;
+import com.ndash.idsphere.integrations.service.CheckoutService;
 import com.ndash.idsphere.integrations.service.IntegrationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,22 +30,24 @@ import java.util.concurrent.CompletionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Service
+@Service("jira")
 public class JiraService implements IntegrationService {
 
 
     private static final Logger log = Logger.getLogger(MethodHandles.lookup().lookupClass().getName());
     private final ObjectMapper mapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final CheckoutService checkoutService;
 
     private final String jiraBaseUrl;
     private final String adminEmail;
     private final String apiToken;
 
     public JiraService(
-            @Value("${integrations.jira.base-url}") String jiraBaseUrl,
+            CheckoutService checkoutService, @Value("${integrations.jira.base-url}") String jiraBaseUrl,
             @Value("${integrations.jira.admin-email}") String adminEmail,
             @Value("${integrations.jira.api-token}") String apiToken) {
+        this.checkoutService = checkoutService;
         this.jiraBaseUrl = jiraBaseUrl;
         this.adminEmail = adminEmail;
         this.apiToken = apiToken;
@@ -108,6 +111,7 @@ public class JiraService implements IntegrationService {
 
             // Step 3️⃣ — Return response immediately (non-blocking)
             var accountId = createUserFuture.join();
+            checkoutService.markProcessedTrue(request.checkoutId());
             return new IntegrationUserResponse(accountId, request.email(), request.displayName(), "CREATED");
 
         } catch (Exception e) {
