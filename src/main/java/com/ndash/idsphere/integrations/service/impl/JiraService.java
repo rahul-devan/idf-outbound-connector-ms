@@ -60,6 +60,7 @@ public class JiraService implements IntegrationService {
 
     @Override
     public IntegrationUserResponse createUser(IntegrationUserRequest request) {
+        //TODO: add Jira specific fields in request, eg: project, role etc
         try {
             var encodedAuth = Base64.getEncoder()
                     .encodeToString((adminEmail + ":" + apiToken).getBytes(StandardCharsets.UTF_8));

@@ -1,6 +1,5 @@
 package com.ndash.idsphere.integrations.controller;
 
-import com.ndash.idsphere.integrations.domain.Checkout;
 import com.ndash.idsphere.integrations.dto.ApiResponse;
 import com.ndash.idsphere.integrations.dto.CheckoutRequest;
 import com.ndash.idsphere.integrations.dto.CheckoutResponse;
@@ -12,9 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/checkout")

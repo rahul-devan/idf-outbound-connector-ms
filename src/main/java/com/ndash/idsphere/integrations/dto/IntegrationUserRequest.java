@@ -5,5 +5,5 @@ import java.util.UUID;
 public record IntegrationUserRequest(
         String email, String displayName,
         String projectKey,
-        String roleId, UUID checkoutId) {
+        String roleId, UUID checkoutId, String gitHubOrg) {
 }

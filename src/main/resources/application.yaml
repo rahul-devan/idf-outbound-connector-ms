@@ -52,8 +52,10 @@ integrations:
     base-url: https://ndashprivatelimited.atlassian.net
     admin-email: ndashprivatelimited@gmail.com
   github:
-    org-name: Ndash-IDF
-    api-token: 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
+    org: Ndash-IDF
+    token: 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
+  workday:
+
 
 
 
