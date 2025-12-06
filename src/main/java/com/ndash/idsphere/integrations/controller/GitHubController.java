@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/integrations/github")
+@RequestMapping("/api/integrations")
 @CrossOrigin("*")
 public class GitHubController {
 
@@ -22,7 +22,11 @@ public class GitHubController {
 
     @GetMapping("/github/{org}/roles")
     public ResponseEntity<?> getGitHubRoles(@PathVariable String org) {
-        return ResponseEntity.ok(gitHubService.getRoles());
+        if(org.isEmpty()) {
+            return ResponseEntity.ok(gitHubService.getRoles());
+        } else {
+            return ResponseEntity.ok(gitHubService.getRoles(org));
+        }
     }
 
 }

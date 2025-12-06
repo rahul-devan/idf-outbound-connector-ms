@@ -104,6 +104,44 @@ public class GitHubService implements IntegrationService {
 
     @Override
     public List<IntegrationRoleResponse> getRoles() {
-        return List.of();
+       return getRoles(githubOrg);
     }
+
+    public List<IntegrationRoleResponse> getRoles(String org) {
+        try {
+            var url = "https://api.github.com/orgs/" + org + "/teams";
+
+            var req = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .timeout(Duration.ofSeconds(15))
+                    .header("Authorization", "Bearer " + githubToken)
+                    .header("Accept", "application/vnd.github+json")
+                    .GET()
+                    .build();
+
+            var resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+
+            if (resp.statusCode() != 200) {
+                throw new ExternalServiceException(
+                        "GITHUB_ROLE_FETCH_FAILED",
+                        "Failed: " + resp.statusCode() + " - " + resp.body()
+                );
+            }
+
+            var teamsJson = mapper.readTree(resp.body());
+
+            return teamsJson.findValues("slug").stream()
+                    .map(node -> new IntegrationRoleResponse(
+                            node.asText(),       // id
+                            node.asText(),       // name
+                            "GitHub Team Role"   // description
+                    ))
+                    .toList();
+
+        } catch (Exception e) {
+            throw new ExternalServiceException("GITHUB_ROLE_EXCEPTION", e.getMessage());
+        }
+    }
+
+
 }
