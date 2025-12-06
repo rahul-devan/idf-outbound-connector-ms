@@ -21,7 +21,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +111,6 @@ public class JiraService implements IntegrationService {
 
             // Step 3️⃣ — Return response immediately (non-blocking)
             var accountId = createUserFuture.join();
-            checkoutService.markProcessedTrue(request.checkoutId());
             return new IntegrationUserResponse(accountId, request.email(), request.displayName(), "CREATED");
 
         } catch (Exception e) {

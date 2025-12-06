@@ -4,6 +4,7 @@ import com.ndash.idsphere.integrations.dto.IntegrationRoleResponse;
 import com.ndash.idsphere.integrations.dto.IntegrationUserRequest;
 import com.ndash.idsphere.integrations.dto.IntegrationUserResponse;
 import com.ndash.idsphere.integrations.registry.IntegrationServiceRegistry;
+import com.ndash.idsphere.integrations.service.CheckoutService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,11 @@ import java.util.List;
 public class IntegrationController {
 
     private final IntegrationServiceRegistry registry;
+    private final CheckoutService checkoutService;
 
-    public IntegrationController(IntegrationServiceRegistry registry) {
+    public IntegrationController(IntegrationServiceRegistry registry, CheckoutService checkoutService) {
         this.registry = registry;
+        this.checkoutService = checkoutService;
     }
 
     @PostMapping("/{service}/create-user")
@@ -29,6 +32,7 @@ public class IntegrationController {
                 .orElseThrow(() -> new IllegalArgumentException("Unknown integration service: " + service));
 
         var response = integrationService.createUser(request);
+        checkoutService.markProcessedTrue(request.checkoutId());
         return ResponseEntity.ok(response);
     }
 
