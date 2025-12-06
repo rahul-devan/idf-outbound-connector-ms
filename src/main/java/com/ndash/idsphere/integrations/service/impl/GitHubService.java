@@ -16,6 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +41,10 @@ public class GitHubService implements IntegrationService {
     @Override
     public IntegrationUserResponse createUser(IntegrationUserRequest request) {
         try {
-            var url = "https://api.github.com/orgs/" + request.gitHubOrg() + "/invitations";
+            if(!Objects.isNull(request.gitHubOrg()) && !request.gitHubOrg().isEmpty() ){
+                githubOrg = request.gitHubOrg();
+            }
+            var url = "https://api.github.com/orgs/" + githubOrg + "/invitations";
 
             var body = mapper.writeValueAsString(
                     java.util.Map.of(
