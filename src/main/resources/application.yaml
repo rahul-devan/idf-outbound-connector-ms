@@ -47,6 +47,11 @@ management:
     health:
       show-details: always
 integrations:
+  odoo:
+    url: https://idsphere.odoo.com
+    db: idsphere
+    username: rico.brown@idsphere.net
+    password: 30d67af5d9c185e36db036f310a2227105f12946
   jira:
     api-token: ATATT3xFfGF0oSFcRQ7o5Lhh8oQD1OUw1o0AyFTdHOBLP2nvGm4p08aeZVlrmaNMaCNxftzcJuPB2geOWkuyxI0YomPKuY-oRhyQq0Hq_cxKoqriaYacSZgMoxN6ubOE9BObVDZzszR5YeTuYSNS7ADVJN2cnDhlFDTuf2klgZDJJ9kNljcIOAY=AF29FD23
     base-url: https://ndashprivatelimited.atlassian.net
@@ -55,6 +60,7 @@ integrations:
     org: Ndash-IDF
     token: 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
   workday:
+
 
 
 

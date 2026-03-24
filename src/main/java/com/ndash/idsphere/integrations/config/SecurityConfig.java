@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger/**").permitAll()
                         .requestMatchers("/api-docs/**").permitAll()
                         .requestMatchers(
-                                "/api/integrations/jira/**","/api/checkout/**"
+                                "/api/integrations/jira/**","/api/checkout/**","/api/odoo/**"
                         ).authenticated()
                         .anyRequest().permitAll()
                 )
