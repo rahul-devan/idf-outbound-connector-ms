@@ -1,6 +1,6 @@
 package com.ndash.idsphere.integrations.service.odoo;
 
-import com.ndash.idsphere.integrations.client.odoo.OdooJsonRpcClient;
+import com.ndash.idsphere.integrations.hr.odoo.client.OdooJsonRpcClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

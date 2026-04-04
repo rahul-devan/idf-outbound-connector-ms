@@ -1,4 +1,4 @@
-package com.ndash.idsphere.integrations.client.odoo;
+package com.ndash.idsphere.integrations.hr.odoo.client;
 
 import com.ndash.idsphere.integrations.config.odoo.OdooConfig;
 import lombok.RequiredArgsConstructor;

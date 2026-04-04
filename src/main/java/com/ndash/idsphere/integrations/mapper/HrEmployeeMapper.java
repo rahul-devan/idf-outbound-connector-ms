@@ -1,7 +1,7 @@
 package com.ndash.idsphere.integrations.mapper;
 
 
-import com.ndash.idsphere.integrations.dto.odoo.EmployeeResponse;
+import com.ndash.idsphere.integrations.dto.hr.HrEmployee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper(componentModel = "spring")
-public interface OdooEmployeeMapper {
+public interface HrEmployeeMapper {
 
     @Mapping(target = "id", expression = "java((Integer) source.get(\"id\"))")
     @Mapping(target = "name", expression = "java(asString(source.get(\"name\")))")
@@ -17,9 +17,9 @@ public interface OdooEmployeeMapper {
     @Mapping(target = "jobTitle", expression = "java(asString(source.get(\"job_title\")))")
     @Mapping(target = "departmentId", expression = "java(extractDepartmentId(source.get(\"department_id\")))")
     @Mapping(target = "departmentName", expression = "java(extractDepartmentName(source.get(\"department_id\")))")
-    EmployeeResponse map(Map<String, Object> source);
+    HrEmployee map(Map<String, Object> source);
 
-    List<EmployeeResponse> mapList(List<Map<String, Object>> source);
+    List<HrEmployee> mapList(List<Map<String, Object>> source);
 
     // ✅ SAFE STRING CONVERSION
     default String asString(Object value) {

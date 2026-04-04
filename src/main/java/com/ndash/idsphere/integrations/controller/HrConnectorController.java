@@ -1,7 +1,7 @@
 package com.ndash.idsphere.integrations.controller;
 
-import com.ndash.idsphere.integrations.dto.odoo.EmployeeResponse;
-import com.ndash.idsphere.integrations.service.odoo.OdooEmployeeService;
+import com.ndash.idsphere.integrations.dto.hr.HrEmployee;
+import com.ndash.idsphere.integrations.service.HrClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,12 +15,12 @@ import java.util.List;
 @RequestMapping("/api/odoo")
 @RequiredArgsConstructor
 @CrossOrigin("*")
-public class OdooHrController {
+public class HrConnectorController {
 
-    private final OdooEmployeeService employeeService;
+    private final HrClientService employeeService;
 
     @GetMapping("/hr/employees")
-    public ResponseEntity<List<EmployeeResponse>> getEmployees() {
+    public ResponseEntity<List<HrEmployee>> getEmployees() {
         return ResponseEntity.ok(employeeService.getEmployees());
     }
 }

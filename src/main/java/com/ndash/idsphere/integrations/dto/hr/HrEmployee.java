@@ -1,11 +1,11 @@
-package com.ndash.idsphere.integrations.dto.odoo;
+package com.ndash.idsphere.integrations.dto.hr;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class EmployeeResponse {
+public class HrEmployee {
 
     private Integer id;
     private String name;

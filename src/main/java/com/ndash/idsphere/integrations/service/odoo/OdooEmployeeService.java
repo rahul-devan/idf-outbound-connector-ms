@@ -1,9 +1,10 @@
 package com.ndash.idsphere.integrations.service.odoo;
 
 
-import com.ndash.idsphere.integrations.client.odoo.OdooJsonRpcClient;
-import com.ndash.idsphere.integrations.dto.odoo.EmployeeResponse;
-import com.ndash.idsphere.integrations.mapper.OdooEmployeeMapper;
+import com.ndash.idsphere.integrations.hr.odoo.client.OdooJsonRpcClient;
+import com.ndash.idsphere.integrations.dto.hr.HrEmployee;
+import com.ndash.idsphere.integrations.mapper.HrEmployeeMapper;
+import com.ndash.idsphere.integrations.service.HrClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OdooEmployeeService {
+public class OdooEmployeeService implements HrClientService {
 
     private final OdooJsonRpcClient client;
-    private final OdooEmployeeMapper mapper;
+    private final HrEmployeeMapper mapper;
 
-    public List<EmployeeResponse> getEmployees() {
+    @Override
+    public List<HrEmployee> getEmployees() {
 
         try {
             Integer uid = client.authenticate();
