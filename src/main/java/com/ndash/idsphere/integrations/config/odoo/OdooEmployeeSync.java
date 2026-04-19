@@ -12,14 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
 @Slf4j
-@Transactional
-public class OdooEmployeeSync implements ApplicationRunner {
+public class OdooEmployeeSync {
 
     private final HrAdapterFactory adapterFactory;
     private final DepartmentService departmentService;
@@ -96,10 +94,5 @@ public class OdooEmployeeSync implements ApplicationRunner {
                 log.error("Error syncing employee: " + emp.getEmail(), ex);
             }
         }
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        sync();
     }
 }
