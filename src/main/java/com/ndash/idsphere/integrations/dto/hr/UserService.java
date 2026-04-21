@@ -22,6 +22,10 @@ public class UserService {
 
     public User upsert(HrEmployee emp, Department dept, ExternalSource src, Blueprint blueprint, JobTitle jobTitle) {
 
+        if (emp.getEmail() == null || emp.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Employee email is missing");
+        }
+
         return repo.findByEmail(emp.getEmail())
                 .map(user -> {
                     user.setFirstName(extractFirstName(emp.getName()));

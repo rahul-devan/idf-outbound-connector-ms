@@ -28,16 +28,19 @@ public class OdooEmployeeService implements HrClientService {
 
             Object result = client.execute(
                     uid,
-                    "hr.employee",
+                    "hr.employee.public",
                     "search_read",
                     List.of(),
                     Map.of(
                             "fields",
                             List.of(
                                     "name",
-                                    "work_email",
                                     "job_title",
-                                    "department_id"
+                                    "work_email",
+                                    "work_phone",
+                                    "mobile_phone",
+                                    "department_id",
+                                    "parent_id"
                             )
                     )
             );
