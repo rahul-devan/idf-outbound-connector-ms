@@ -37,6 +37,7 @@ public class UserService {
                     user.setSource(UserSource.HR);
                     user.setLastSyncedAt(LocalDateTime.now());
                     user.setJobTitle(jobTitle);
+                    mapManager(emp, user);
                     return repo.save(user);
                 })
                 .orElseGet(() -> {
@@ -52,6 +53,7 @@ public class UserService {
                     user.setActive(true);
                     user.setJobTitle(jobTitle);
                     user.setLastSyncedAt(LocalDateTime.now());
+                    mapManager(emp, user);
                     return repo.save(user);
                 });
     }
@@ -64,5 +66,17 @@ public class UserService {
         return name != null && name.contains(" ")
                 ? name.substring(name.indexOf(" ") + 1)
                 : null;
+    }
+
+    public void mapManager(HrEmployee hrEmployee, User user) {
+
+        Integer managerExternalId = hrEmployee.getManagerId();
+
+        if (managerExternalId != null) {
+            repo.findByExternalId(String.valueOf(managerExternalId))
+                    .ifPresent(user::setManager);
+        } else {
+            user.setManager(null);
+        }
     }
 }
