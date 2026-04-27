@@ -42,10 +42,7 @@ public class UserService {
                     user.setLastSyncedAt(LocalDateTime.now());
                     user.setJobTitle(jobTitle);
                     mapManager(emp, user);
-                    UserRole userRole = new UserRole();
-                    userRole.setUser(user);
-                    userRole.setRole(defaultRole);
-                    user.setUserRoles(Set.of(userRole));
+                    assignDefaultRole(user, defaultRole);
                     return repo.save(user);
                 })
                 .orElseGet(() -> {
@@ -62,10 +59,7 @@ public class UserService {
                     user.setJobTitle(jobTitle);
                     user.setLastSyncedAt(LocalDateTime.now());
                     mapManager(emp, user);
-                    UserRole userRole = new UserRole();
-                    userRole.setUser(user);
-                    userRole.setRole(defaultRole);
-                    user.setUserRoles(Set.of(userRole));
+                    assignDefaultRole(user, defaultRole);
                     return repo.save(user);
                 });
     }
@@ -90,5 +84,22 @@ public class UserService {
         } else {
             user.setManager(null);
         }
+    }
+
+    private void assignDefaultRole(User user, Role defaultRole) {
+
+        if (defaultRole == null) {
+            throw new RuntimeException("Default role 'user' not found");
+        }
+
+        // Remove previous roles safely
+        user.getUserRoles().clear();
+
+        // Add new role
+        UserRole userRole = new UserRole();
+        userRole.setUser(user);
+        userRole.setRole(defaultRole);
+
+        user.getUserRoles().add(userRole);
     }
 }
