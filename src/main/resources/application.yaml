@@ -1,3 +1,6 @@
+#server:
+#  port: 8081
+
 spring:
   application:
     name: idf-outbound-connector-ms
@@ -31,6 +34,10 @@ spring:
       hibernate:
         format_sql: true
 
+hr:
+  default-department-name: UNKNOWN
+  default-department-external-id: DEFAULT
+
 azure:
   tenant-id: db067b07-979a-4dfa-8f65-2f7e2ed9201d
   client-id: 2fea369b-c5a4-40b3-8bbf-4634463719fd
@@ -53,9 +60,9 @@ integrations:
     username: rico.brown@idsphere.net
     password: 30d67af5d9c185e36db036f310a2227105f12946
   jira:
-    api-token: ATATT3xFfGF0oSFcRQ7o5Lhh8oQD1OUw1o0AyFTdHOBLP2nvGm4p08aeZVlrmaNMaCNxftzcJuPB2geOWkuyxI0YomPKuY-oRhyQq0Hq_cxKoqriaYacSZgMoxN6ubOE9BObVDZzszR5YeTuYSNS7ADVJN2cnDhlFDTuf2klgZDJJ9kNljcIOAY=AF29FD23
-    base-url: https://ndashprivatelimited.atlassian.net
-    admin-email: ndashprivatelimited@gmail.com
+    api-token: ATATT3xFfGF0EEB2E4I-HMbj8-QqrHjwT-PfL3hUbMu8ETDQ35BDzUCFAsCIPSGLi12Hmldcwo53WzQNqjdbKz4-RPxbm5BKBv9TiUtwncemKJtJv4gN_3WVyrsiI5c8oDDBxePOpZ2JG_mX9LjQxPeGKmSUp5dgJXFqliFVfM9NsZvVNhjAN8M=6496FCA2
+    base-url: https://ndash.atlassian.net
+    admin-email: inform.rahuldevan@gmail.com
   github:
     org: Ndash-IDF
     token: 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
