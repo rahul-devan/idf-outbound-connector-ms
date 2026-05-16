@@ -60,8 +60,8 @@ integrations:
     username: rico.brown@idsphere.net
     password: 30d67af5d9c185e36db036f310a2227105f12946
   jira:
-    api-token: ATATT3xFfGF0EEB2E4I-HMbj8-QqrHjwT-PfL3hUbMu8ETDQ35BDzUCFAsCIPSGLi12Hmldcwo53WzQNqjdbKz4-RPxbm5BKBv9TiUtwncemKJtJv4gN_3WVyrsiI5c8oDDBxePOpZ2JG_mX9LjQxPeGKmSUp5dgJXFqliFVfM9NsZvVNhjAN8M=6496FCA2
-    base-url: https://ndash.atlassian.net
+    api-token: ATATT3xFfGF08E1e9ofDaA7EIttj2XH-sDyhCNU1F4HIgWoEVYkxUd2Wm4OIQWzl-8KlJWbz88q9d4WqHN7FJS1LdemWSdug7sm36j7EVtR9HqL6DWCmCD706Pfl_Q1UCm8t1m6yV7YqaczJqvi_XICQQp8EMmSrLwzt5Wlc_OqRunJ3i9UcNJY=4720C7D8
+    base-url: https://testidf.atlassian.net
     admin-email: inform.rahuldevan@gmail.com
   github:
     org: Ndash-IDF
