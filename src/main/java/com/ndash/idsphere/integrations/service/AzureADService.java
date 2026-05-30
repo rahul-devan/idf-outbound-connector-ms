@@ -1,0 +1,88 @@
+package com.ndash.idsphere.integrations.service;
+
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.microsoft.graph.authentication.TokenCredentialAuthProvider;
+import com.microsoft.graph.models.PasswordProfile;
+import com.microsoft.graph.models.User;
+import com.microsoft.graph.requests.GraphServiceClient;
+import okhttp3.Request;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+
+@Service
+public class AzureADService {
+
+    private final GraphServiceClient<Request> graphClient;
+
+    public AzureADService(@Value("${azure.client-id}") String clientId,
+                          @Value("${azure.client-secret}") String clientSecret,
+                          @Value("${azure.tenant-id}") String tenantId) {
+
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .tenantId(tenantId)
+                .build();
+
+        graphClient = GraphServiceClient
+                .builder()
+                .authenticationProvider(new TokenCredentialAuthProvider(Collections.singletonList("https://graph.microsoft.com/.default"), credential))
+                .buildClient();
+    }
+
+    public List<User> getAllUsers() {
+        return graphClient.users().buildRequest().get().getCurrentPage();
+    }
+
+    public User createUser(String displayName, String mail) {
+        User user = new User();
+        user.displayName = displayName;
+        user.mailNickname = mail.split("@")[0];
+        user.userPrincipalName = displayName + "@NETORGFT16179011.onmicrosoft.com";
+        user.accountEnabled = true;
+        user.passwordProfile = new PasswordProfile();
+        user.mail = mail;
+        user.passwordProfile.password = "StrongPassword123!";
+        user.passwordProfile.forceChangePasswordNextSignIn = true;
+
+        return graphClient.users().buildRequest().post(user);
+    }
+
+    public void deleteUser(String userId) {
+        graphClient.users(userId).buildRequest().delete();
+    }
+
+    public List<com.microsoft.graph.models.Group> getAllGroups() {
+        return graphClient.groups().buildRequest().get().getCurrentPage();
+    }
+
+    public com.microsoft.graph.models.User getUserByEmail(String email) {
+        List<com.microsoft.graph.models.User> users = graphClient.users()
+                .buildRequest()
+                .filter("mail eq '" + email + "'")
+                .get()
+                .getCurrentPage();
+
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+
+    public void updateUser(String azureId, String firstName, String lastName, String phone) {
+
+        User user = new User();
+
+        user.givenName = firstName;
+        user.surname = lastName;
+        user.mobilePhone = phone;
+
+        graphClient.users(azureId).buildRequest()
+                .patch(user);
+    }
+
+
+}
+

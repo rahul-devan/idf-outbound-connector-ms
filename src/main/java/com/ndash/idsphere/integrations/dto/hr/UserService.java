@@ -5,21 +5,24 @@ import com.ndash.idsphere.integrations.domain.enums.ExternalSource;
 import com.ndash.idsphere.integrations.domain.enums.UserSource;
 import com.ndash.idsphere.integrations.repositories.RoleRepository;
 import com.ndash.idsphere.integrations.repositories.UserRepository;
+import com.ndash.idsphere.integrations.service.AzureADService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository repo;
     private final RoleRepository roleRepository;
-
-    public UserService(UserRepository repo, RoleRepository roleRepository) {
-        this.repo = repo;
-        this.roleRepository = roleRepository;
-    }
+    private final AzureADService azureADService;
+    private final PasswordEncoder passwordEncoder;
 
     public User upsert(HrEmployee emp, Department dept, ExternalSource src, Blueprint blueprint, JobTitle jobTitle) {
 
@@ -28,6 +31,7 @@ public class UserService {
         }
 
         Role defaultRole = roleRepository.findByName("user").orElse(null);
+
 
 
         return repo.findByEmail(emp.getEmail())
@@ -43,6 +47,8 @@ public class UserService {
                     user.setJobTitle(jobTitle);
                     mapManager(emp, user);
                     assignDefaultRole(user, defaultRole);
+                    user.setPassword(passwordEncoder.encode("Test@123"));
+                    checkInAzureAD(user);
                     return repo.save(user);
                 })
                 .orElseGet(() -> {
@@ -60,6 +66,8 @@ public class UserService {
                     user.setLastSyncedAt(LocalDateTime.now());
                     mapManager(emp, user);
                     assignDefaultRole(user, defaultRole);
+                    user.setPassword(passwordEncoder.encode("Test@123"));
+                    checkInAzureAD(user);
                     return repo.save(user);
                 });
     }
@@ -92,14 +100,35 @@ public class UserService {
             throw new RuntimeException("Default role 'user' not found");
         }
 
-        // Remove previous roles safely
-        user.getUserRoles().clear();
+        boolean exists = user.getUserRoles()
+                .stream()
+                .anyMatch(ur ->
+                        ur.getRole() != null &&
+                                ur.getRole().getId().equals(defaultRole.getId())
+                );
 
-        // Add new role
+        if (exists) {
+            return;
+        }
+
         UserRole userRole = new UserRole();
         userRole.setUser(user);
         userRole.setRole(defaultRole);
 
         user.getUserRoles().add(userRole);
+    }
+
+
+    public void checkInAzureAD(User user) {
+        try {
+            if (user.getAzureId() == null) {
+                log.info("Creating user in Azure AD for email={}", user.getEmail());
+                com.microsoft.graph.models.User azureUser = azureADService.createUser(user.getFirstName(), user.getEmail());
+                user.setAzureId(azureUser != null ? azureUser.id : null);
+                log.info("User created in Azure AD with id={}", user.getAzureId());
+            }
+        } catch (Exception e) {
+            log.error("Failed to create user in Azure AD for email={}", user.getEmail());
+        }
     }
 }

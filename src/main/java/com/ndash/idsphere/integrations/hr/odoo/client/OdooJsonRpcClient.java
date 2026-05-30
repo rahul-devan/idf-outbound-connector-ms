@@ -40,7 +40,27 @@ public class OdooJsonRpcClient {
                 .bodyToMono(Map.class)
                 .block();
 
-        return (Integer) response.get("result");
+        Object result = response.get("result");
+
+        if (result == null || Boolean.FALSE.equals(result)) {
+
+            throw new RuntimeException(
+                    "Odoo authentication failed. " +
+                            "Check database, username and password."
+            );
+        }
+
+        if (result instanceof Integer) {
+            return (Integer) result;
+        }
+
+        if (result instanceof Number) {
+            return ((Number) result).intValue();
+        }
+
+        throw new RuntimeException(
+                "Unexpected Odoo auth response: " + result
+        );
     }
 
 

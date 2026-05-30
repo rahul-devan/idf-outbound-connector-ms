@@ -1,14 +1,15 @@
 package com.ndash.idsphere.integrations.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "user_roles")
-@Data
+@Getter
+@Setter
 public class UserRole {
 
     @EmbeddedId
@@ -23,17 +24,4 @@ public class UserRole {
     private Role role;
 
     private LocalDateTime assignedAt = LocalDateTime.now();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserRole)) return false;
-        UserRole other = (UserRole) o;
-        return id != null && id.equals(other.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

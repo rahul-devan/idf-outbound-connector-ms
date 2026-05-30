@@ -2,7 +2,8 @@ package com.ndash.idsphere.integrations.domain;
 
 import com.ndash.idsphere.integrations.domain.enums.UserSource;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -10,7 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 public class User {
 
     @Id
