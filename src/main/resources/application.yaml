@@ -57,7 +57,7 @@ integrations:
     url: https://idsphere.odoo.com
     db: idsphere
     username: rico.brown@idsphere.net
-    password: d235357799e5beef91c4428bfb8b159dd633b4f7
+    password: b85a1522e3ea70d0d7243d1945a3d39d73ced9b6
   jira:
     api-token: ATATT3xFfGF08E1e9ofDaA7EIttj2XH-sDyhCNU1F4HIgWoEVYkxUd2Wm4OIQWzl-8KlJWbz88q9d4WqHN7FJS1LdemWSdug7sm36j7EVtR9HqL6DWCmCD706Pfl_Q1UCm8t1m6yV7YqaczJqvi_XICQQp8EMmSrLwzt5Wlc_OqRunJ3i9UcNJY=4720C7D8
     base-url: https://testidf.atlassian.net
