@@ -1,21 +1,19 @@
 package com.ndash.idsphere.integrations.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "applications")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(nullable = false, unique = true, length = 100)
@@ -38,6 +36,12 @@ public class Application {
 
     @Column(name = "updated_at")
     private java.time.LocalDateTime updatedAt;
+
+    @Column(name = "integration_name")
+    private String integrationName;
+
+    @Column(name = "essential")
+    private Boolean essential;
 
     @PrePersist
     protected void onCreate() {
