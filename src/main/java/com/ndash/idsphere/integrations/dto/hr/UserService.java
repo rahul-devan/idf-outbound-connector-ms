@@ -124,7 +124,7 @@ public class UserService {
         try {
             if (user.getAzureId() == null) {
                 log.info("Creating user in Azure AD for email={}", user.getEmail());
-                com.microsoft.graph.models.User azureUser = azureADService.createUser(user.getFirstName(), user.getEmail());
+                com.microsoft.graph.models.User azureUser = azureADService.createUser(user.getFirstName()+"."+user.getLastName(), user.getEmail());
                 user.setAzureId(azureUser != null ? azureUser.id : null);
                 log.info("User created in Azure AD with id={}", user.getAzureId());
             }
