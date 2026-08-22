@@ -1,7 +1,9 @@
 package com.ndash.idsphere.integrations.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ndash.idsphere.integrations.dto.IntegrationRoleResponse;
+import com.ndash.idsphere.integrations.dto.github.GitHubProjectResponse;
 import com.ndash.idsphere.integrations.dto.IntegrationUserRequest;
 import com.ndash.idsphere.integrations.dto.IntegrationUserResponse;
 import com.ndash.idsphere.integrations.exception.ExternalServiceException;
@@ -16,6 +18,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +44,7 @@ public class GitHubService implements IntegrationService {
     @Override
     public IntegrationUserResponse createUser(IntegrationUserRequest request) {
         try {
-            if(!Objects.isNull(request.gitHubOrg()) && !request.gitHubOrg().isEmpty() ){
+            if (!Objects.isNull(request.gitHubOrg()) && !request.gitHubOrg().isEmpty()) {
                 githubOrg = request.gitHubOrg();
             }
             var url = "https://api.github.com/orgs/" + githubOrg + "/invitations";
@@ -63,7 +66,7 @@ public class GitHubService implements IntegrationService {
                     .build();
 
             var resp = client.send(req, HttpResponse.BodyHandlers.ofString());
-
+            log.info(resp.statusCode() + " ");
             return switch (resp.statusCode()) {
                 case 201 -> new IntegrationUserResponse(
                         request.email(), request.email(), request.displayName(), "INVITED"
@@ -108,13 +111,84 @@ public class GitHubService implements IntegrationService {
 
     @Override
     public List<IntegrationRoleResponse> getRoles() {
-       return getRoles(githubOrg);
+        return getRoles(githubOrg);
+    }
+
+    public List<GitHubProjectResponse> getProjects() {
+        return getProjects(githubOrg);
+    }
+
+    public List<GitHubProjectResponse> getProjects(String org) {
+        try {
+            var query = """
+                    query {
+                      organization(login: "%s") {
+                        projectsV2(first: 100) {
+                          nodes {
+                            id
+                            number
+                            title
+                            url
+                            shortDescription
+                            closed
+                          }
+                        }
+                      }
+                    }
+                    """.formatted(org);
+
+            var body = mapper.writeValueAsString(Map.of("query", query));
+
+            var req = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.github.com/graphql"))
+                    .timeout(Duration.ofSeconds(15))
+                    .header("Authorization", "Bearer " + githubToken)
+                    .header("Accept", "application/vnd.github+json")
+                    .header("Content-Type", "application/json")
+                    .header("X-GitHub-Api-Version", "2022-11-28")
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .build();
+
+            var resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+
+            if (resp.statusCode() != 200) {
+                throw new ExternalServiceException(
+                        "GITHUB_PROJECT_FETCH_FAILED",
+                        "Failed: " + resp.statusCode() + " - " + resp.body()
+                );
+            }
+
+            var json = mapper.readTree(resp.body());
+
+            if (json.has("errors") && !json.path("errors").isEmpty()) {
+                throw new ExternalServiceException(
+                        "GITHUB_PROJECT_FETCH_FAILED",
+                        json.path("errors").toString()
+                );
+            }
+
+            var organization = json.path("data").path("organization");
+            if (organization.isMissingNode() || organization.isNull()) {
+                throw new ExternalServiceException(
+                        "GITHUB_PROJECT_FETCH_FAILED",
+                        "Organization not found: " + org
+                );
+            }
+
+            var nodes = organization.path("projectsV2").path("nodes");
+            return mapper.convertValue(nodes, new TypeReference<List<GitHubProjectResponse>>() {});
+
+        } catch (ExternalServiceException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ExternalServiceException("GITHUB_PROJECT_EXCEPTION", e.getMessage());
+        }
     }
 
     public List<IntegrationRoleResponse> getRoles(String org) {
         try {
             var url = "https://api.github.com/orgs/" + org + "/teams";
-
+            log.info("Token " + githubToken);
             var req = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .timeout(Duration.ofSeconds(15))
@@ -143,6 +217,7 @@ public class GitHubService implements IntegrationService {
                     .toList();
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ExternalServiceException("GITHUB_ROLE_EXCEPTION", e.getMessage());
         }
     }
