@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+integrations:
+  github:
+    org: { GITHU_ORG }
+    token: { GITHUB_TOKEN }
+  jira:
+    api-token: { JIRA_API_TOKEN }
+    base-url: https://nddash.atlassian.net
+    admin-email: hialwin94@gmail.com
