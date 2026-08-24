@@ -60,7 +60,7 @@ integrations:
     base-url: https://testidf.atlassian.net
     admin-email: inform.rahuldevan@gmail.com
   github:
-    org: ${GITHU_ORG}
+    org: ${GITHUB_ORG}
     token: ${GITHUB_TOKEN}
   workday:
 
