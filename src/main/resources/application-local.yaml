@@ -3,9 +3,9 @@ server:
 
 integrations:
   github:
-    org: ${GITHUB_ORG }
-    token: ${GITHUB_TOKEN }
+    org: ${GITHUB_ORG}
+    token: ${GITHUB_TOKEN}
   jira:
-    api-token: { JIRA_API_TOKEN }
+    api-token: ${JIRA_API_TOKEN}
     base-url: https://nddash.atlassian.net
     admin-email: hialwin94@gmail.com

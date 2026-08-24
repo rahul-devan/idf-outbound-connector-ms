@@ -60,8 +60,8 @@ integrations:
     base-url: https://testidf.atlassian.net
     admin-email: inform.rahuldevan@gmail.com
   github:
-    org: ${GITHUB_ORG}
-    token: ${GITHUB_TOKEN}
+    org: ${GITHUB_ORG:sdfsdf}
+    token: ${GITHUB_TOKEN:5465465}
   workday:
 
 
