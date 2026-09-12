@@ -34,6 +34,7 @@ public class OdooEmployeeService implements HrClientService {
                     Map.of(
                             "fields",
                             List.of(
+                                    "id",
                                     "name",
                                     "job_title",
                                     "work_email",
