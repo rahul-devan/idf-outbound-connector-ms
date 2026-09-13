@@ -13,7 +13,7 @@ public class HrSyncScheduler {
 
     private final HrUserSyncService hrUserSyncService;
 
-    @Scheduled(cron = "${scheduler.hr-sync.cron: 0 0 0 * * *}") // Default: every day at midnight
+    @Scheduled(cron = "${scheduler.hr-sync.cron: 0 0 * * * *}") // Default: every hour
     public void syncHrUsers() {
 
         log.info("Starting scheduled HR user sync");
